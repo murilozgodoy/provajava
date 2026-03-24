@@ -36,6 +36,16 @@ public class ParticipanteService {
             throw new RuntimeException("Data de nascimento é obrigatória");
         }
 
+        for (Participante p : participantes.values()) {
+            if (!p.isDeleted() && p.getCpf().equals(participante.getCpf())) {
+                throw new RuntimeException("CPF já cadastrado");
+            }
+
+            if (!p.isDeleted() && p.getEmail().equals(participante.getEmail())) {
+                throw new RuntimeException("Email já cadastrado");
+            }
+        }
+
         participante.setId(proximoId);
         proximoId++;
 
@@ -88,6 +98,16 @@ public class ParticipanteService {
 
         if (participanteAtualizado.getDataNascimento() == null) {
             throw new RuntimeException("Data de nascimento é obrigatória");
+        }
+
+        for (Participante p : participantes.values()) {
+            if (!p.isDeleted() && !p.getId().equals(id) && p.getCpf().equals(participanteAtualizado.getCpf())) {
+                throw new RuntimeException("CPF já cadastrado");
+            }
+
+            if (!p.isDeleted() && !p.getId().equals(id) && p.getEmail().equals(participanteAtualizado.getEmail())) {
+                throw new RuntimeException("Email já cadastrado");
+            }
         }
 
         participanteExistente.setNome(participanteAtualizado.getNome());

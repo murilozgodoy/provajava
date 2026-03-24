@@ -37,6 +37,16 @@ public class InscricaoService {
         Participante participante = participanteService.buscarParticipante(inscricao.getParticipante().getId());
         Evento evento = eventoService.buscarEvento(inscricao.getEvento().getId());
 
+        for (Inscricao i : inscricoes.values()) {
+            if (!i.isDeleted()
+                    && !i.getParticipante().isDeleted()
+                    && !i.getEvento().isDeleted()
+                    && i.getParticipante().getId().equals(participante.getId())
+                    && i.getEvento().getId().equals(evento.getId())) {
+                throw new RuntimeException("Participante já está inscrito neste evento");
+            }
+        }
+
         //pensei em fazer uma conta para saber o nmr de inscricoes para conseguir saber se o evento esta lotadod
         int totalInscricoesAtivas = 0;
         for (Inscricao i : inscricoes.values()) {
@@ -108,6 +118,17 @@ public class InscricaoService {
 
         Participante participante = participanteService.buscarParticipante(inscricaoAtualizada.getParticipante().getId());
         Evento evento = eventoService.buscarEvento(inscricaoAtualizada.getEvento().getId());
+
+        for (Inscricao i : inscricoes.values()) {
+            if (!i.isDeleted()
+                    && !i.getParticipante().isDeleted()
+                    && !i.getEvento().isDeleted()
+                    && !i.getId().equals(id)
+                    && i.getParticipante().getId().equals(participante.getId())
+                    && i.getEvento().getId().equals(evento.getId())) {
+                throw new RuntimeException("Participante já está inscrito neste evento");
+            }
+        }
 
         int totalInscricoesAtivas = 0;
         for (Inscricao i : inscricoes.values()) {
